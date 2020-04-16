@@ -49,7 +49,7 @@ const int screen_length = 0x10000 ;
 [System.Runtime.InteropServices.DllImport("user32.dll")]
 extern static uint SendInput(uint nInputs, INPUT[] pInputs, int cbSize);
 
-public static void RightClickAtPoint(int x, int y)
+public static void LeftClickAtPoint(int x, int y)
 {
     //Move the mouse
     INPUT[] input = new INPUT[3];
@@ -57,30 +57,44 @@ public static void RightClickAtPoint(int x, int y)
     input[0].mi.dy = y*(65535/System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height);
     input[0].mi.dwFlags = MOUSEEVENTF_MOVED | MOUSEEVENTF_ABSOLUTE;
     //Left mouse button down
-    input[1].mi.dwFlags = MOUSEEVENTF_RIGHTDOWN;
+    input[1].mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
     //Left mouse button up
-    input[2].mi.dwFlags = MOUSEEVENTF_RIGHTUP;
+    input[2].mi.dwFlags = MOUSEEVENTF_LEFTUP;
     SendInput(3, input, Marshal.SizeOf(input[0]));
 }
 
 public static void Draw()
 {
-    while(true)
-        {
-        int[] x = new int[]{500, 700, 700, 500};
-        int[] y = new int[]{500, 500, 700, 700};
+    Thread.Sleep(500);
+    for (int i = 0; i < 200; i++)
+    {
+        Thread.Sleep(20);
+        LeftClickAtPoint(500, 300 + i);
+    }
 
-        for (int i = 0; i < x.Length; i++)
-        {
-            Thread.Sleep(5000);
-            RightClickAtPoint(x[i], y[i]);
-        }
+    for (int i = 0; i < 100; i++)
+    {
+        Thread.Sleep(20);
+        LeftClickAtPoint(500+i, 400);
+    }
+
+    for (int i = 0; i < 200; i++)
+    {
+        Thread.Sleep(20);
+        LeftClickAtPoint(600, 300 + i);
+    }
+
+    for (int i = 0; i < 200; i++)
+    {
+        Thread.Sleep(20);
+        LeftClickAtPoint(700, 300 + i);
     }
 }
 }
 '@
 Add-Type -TypeDefinition $cSource -ReferencedAssemblies System.Windows.Forms,System.Drawing
 #Send a click at a specified point
-
+& "C:\Windows\system32\mspaint.exe"  
 
 [Clicker]::Draw()
+
