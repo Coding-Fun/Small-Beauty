@@ -66,6 +66,8 @@ public static void LeftClickAtPoint(int x, int y)
 public static void Draw()
 {
     Thread.Sleep(500);
+    while(true) 
+    {
     for (int i = 0; i < 200; i++)
     {
         Thread.Sleep(20);
@@ -88,6 +90,7 @@ public static void Draw()
     {
         Thread.Sleep(20);
         LeftClickAtPoint(700, 300 + i);
+    }
     }
 }
 }
